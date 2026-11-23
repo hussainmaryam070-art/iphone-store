@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bazaar Mobiles – Latest phones in PKR</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#e8f0ec;--ink:#12302a;--accent:#1f8a6b;--body:#1f8a6b;--soft:rgba(0,0,0,.07);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",sans-serif;transition:background .5s,color .5s;line-height:1.5}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.bar{display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:14px 20px;border-bottom:2px solid var(--ink)}
+.brand{font-weight:800;font-size:20px;letter-spacing:-.02em}
+.tally{display:flex;gap:18px;align-items:center}
+.tally b{font-size:28px;font-weight:800;line-height:1}
+.tally small{display:block;font-size:12px;opacity:.7}
+.reset{background:none;border:1px solid var(--ink);border-radius:99px;padding:4px 12px;font-size:13px}
+main{max-width:1040px;margin:0 auto;padding:24px 20px 60px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:36px}
+@media(max-width:760px){main{grid-template-columns:1fr}}
+.stage{position:sticky;top:12px;align-self:start;text-align:center}
+@media(max-width:760px){.stage{position:static}}
+.phone{width:150px;height:300px;margin:8px auto 18px;border-radius:30px;background:var(--body);padding:8px;box-shadow:0 22px 40px -16px var(--ink);position:relative;transition:background .5s}
+.screen{height:100%;border-radius:23px;background:linear-gradient(160deg,var(--accent),var(--bg) 85%);position:relative;overflow:hidden}
+.screen::after{content:"";position:absolute;top:8px;left:50%;width:34px;height:9px;margin-left:-17px;border-radius:9px;background:var(--ink)}
+.lens{position:absolute;right:18px;top:20px;width:30px;height:30px;border-radius:9px;background:var(--ink);opacity:.9}
+h1{font-size:clamp(30px,5vw,46px);line-height:1.05;letter-spacing:-.03em;margin:0 0 4px;font-weight:800}
+.price{font-size:24px;font-weight:600}
+.swatches{display:flex;gap:10px;justify-content:center;margin:14px 0}
+.sw{width:34px;height:34px;border-radius:50%;border:3px solid transparent;box-shadow:0 0 0 1px var(--ink);padding:0}
+.sw[aria-pressed=true]{border-color:var(--bg);box-shadow:0 0 0 3px var(--ink)}
+.cname{font-size:14px;opacity:.8;margin:0}
+table.spec{width:100%;border-collapse:collapse;margin-top:14px;text-align:left;font-size:15px}
+.spec th{font-weight:600;padding:7px 10px 7px 0;width:38%;vertical-align:top;opacity:.75}
+.spec td{padding:7px 0}
+.spec tr{border-top:1px solid var(--soft)}
+h2{font-size:22px;margin:0 0 10px;letter-spacing:-.01em}
+.list{display:flex;flex-direction:column}
+.row{display:grid;grid-template-columns:1fr auto;gap:4px 12px;align-items:center;padding:14px 12px;margin:0 -12px;border-top:1px solid var(--soft);border-radius:14px;cursor:pointer;background:none;border-left:0;border-right:0;border-bottom:0;text-align:left;width:calc(100% + 24px)}
+.row[aria-current=true]{background:var(--soft);border-top-color:transparent}
+.row .n{font-weight:600;font-size:17px}
+.row .b{font-size:13px;opacity:.7}
+.row .p{font-weight:600;text-align:right}
+.row .s{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;font-size:13px}
+.sell{background:var(--ink);color:var(--bg);border:0;border-radius:99px;padding:6px 14px;font-weight:600;font-size:14px}
+.sell:active{transform:scale(.95)}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,30px);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:99px;opacity:0;transition:.25s;pointer-events:none;font-size:14px}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header class="bar">
+  <div class="brand">Bazaar Mobiles</div>
+  <div class="tally" aria-live="polite">
+    <div><b id="cnt">0</b><small>phones sold today</small></div>
+    <div><b id="rev">Rs 0</b><small>sales today</small></div>
+    <button class="reset" id="reset">Reset day</button>
+  </div>
+</header>
+<main>
+  <section class="stage" aria-label="Selected phone">
+    <div class="phone" aria-hidden="true"><div class="screen"><div class="lens"></div></div></div>
+    <h1 id="name"></h1>
+    <div class="price" id="price"></div>
+    <div class="swatches" id="sw" role="group" aria-label="Colour choices"></div>
+    <p class="cname" id="cname"></p>
+    <table class="spec" id="spec"></table>
+  </section>
+  <section aria-label="All models">
+    <h2>Latest models</h2>
+    <div class="list" id="list"></div>
+  </section>
+</main>
+<div class="toast" id="toast" role="status"></div>
+<script>
+// Sample data: edit names, prices (PKR) and specs to match your stock.
+var PHONES=[
+{id:"ip",brand:"Apple",name:"iPhone 17 Pro",price:419000,specs:[["Display",'6.3" LTPO OLED, 120 Hz'],["Chip","A19 Pro"],["Rear camera","48 MP triple"],["Battery","All-day, fast charge"],["Storage","256 GB"]],
+ themes:[{n:"Cosmic Orange",bg:"#fbe9dc",ink:"#3a1a0c",accent:"#ff7a2f",body:"#f26a1b"},{n:"Deep Blue",bg:"#dfe6f3",ink:"#0d1b3d",accent:"#3b5bdb",body:"#27375f"},{n:"Silver",bg:"#eceef1",ink:"#1d2126",accent:"#7c8794",body:"#c9ced4"}]},
+{id:"sg",brand:"Samsung",name:"Galaxy S25 Ultra",price:389000,specs:[["Display",'6.9" Dynamic AMOLED, 120 Hz'],["Chip","Snapdragon 8 Elite"],["Rear camera","200 MP quad"],["Battery","5,000 mAh, 45 W"],["Storage","256 GB"]],
+ themes:[{n:"Titanium Gray",bg:"#e6e8ea",ink:"#1b1f23",accent:"#5b6b7a",body:"#6f7780"},{n:"Titanium Violet",bg:"#ece6f5",ink:"#2a1a47",accent:"#7c4dcc",body:"#8a74b6"}]},
+{id:"px",brand:"Google",name:"Pixel 10 Pro",price:329000,specs:[["Display",'6.3" LTPO OLED, 120 Hz'],["Chip","Google Tensor G5"],["Rear camera","50 MP triple"],["Battery","Fast + wireless charging"],["Storage","128 GB"]],
+ themes:[{n:"Moonstone",bg:"#e4ecee",ink:"#16292e",accent:"#2f8f9d",body:"#5d7a82"},{n:"Jade",bg:"#e0efe6",ink:"#0f2a1c",accent:"#2f9e63",body:"#4c8a68"}]},
+{id:"xm",brand:"Xiaomi",name:"Xiaomi 15",price:239000,specs:[["Display",'6.36" AMOLED, 120 Hz'],["Chip","Snapdragon 8 Elite"],["Rear camera","50 MP Leica triple"],["Battery","5,240 mAh, 90 W"],["Storage","256 GB"]],
+ themes:[{n:"Forest Green",bg:"#e1ede4",ink:"#12281a",accent:"#2e7d4f",body:"#2f5d44"},{n:"White",bg:"#f1efe9",ink:"#26231c",accent:"#c79a2b",body:"#ece9e0"}]},
+{id:"in",brand:"Infinix",name:"Infinix GT 30 Pro",price:79000,specs:[["Display",'6.78" AMOLED, 144 Hz'],["Chip","Dimensity 8350 Ultimate"],["Rear camera","108 MP"],["Battery","5,500 mAh, 45 W"],["Storage","256 GB"]],
+ themes:[{n:"Blade White",bg:"#e8ecf8",ink:"#141a38",accent:"#5468ff",body:"#e9ecf5"},{n:"Dark Flare",bg:"#2a2230",ink:"#f3e9ff",accent:"#b05cff",body:"#1c1522"}]},
+{id:"tc",brand:"Tecno",name:"Tecno Camon 40 Pro",price:64000,specs:[["Display",'6.78" AMOLED, 120 Hz'],["Chip","Helio G100"],["Rear camera","50 MP OIS"],["Battery","5,200 mAh, 70 W"],["Storage","256 GB"]],
+ themes:[{n:"Glacier Blue",bg:"#dff0f6",ink:"#0d2a36",accent:"#1f9ac4",body:"#67b7d6"},{n:"Sand",bg:"#f3ead8",ink:"#33260d",accent:"#c98a1c",body:"#d8bf8c"}]}
+];
+var $=function(i){return document.getElementById(i)};
+var cur=0,th=0,sold={},key="bazaar-sales";
+function today(){return new Date().toISOString().slice(0,10)}
+function load(){try{var d=JSON.parse(localStorage.getItem(key)||"null");if(d&&d.day===today())sold=d.sold||{}}catch(e){}}
+function save(){try{localStorage.setItem(key,JSON.stringify({day:today(),sold:sold}))}catch(e){}}
+function pkr(n){return "Rs "+n.toLocaleString("en-PK")}
+function totals(){var c=0,r=0;PHONES.forEach(function(p){var n=sold[p.id]||0;c+=n;r+=n*p.price});$("cnt").textContent=c;$("rev").textContent=pkr(r)}
+function theme(){var t=PHONES[cur].themes[th],s=document.documentElement.style;s.setProperty("--bg",t.bg);s.setProperty("--ink",t.ink);s.setProperty("--accent",t.accent);s.setProperty("--body",t.body);$("cname").textContent=t.n}
+function stage(){var p=PHONES[cur];$("name").textContent=p.name;$("price").textContent=pkr(p.price);
+ $("spec").innerHTML=p.specs.map(function(s){return "<tr><th>"+s[0]+"</th><td>"+s[1]+"</td></tr>"}).join("");
+ $("sw").innerHTML="";p.themes.forEach(function(t,i){var b=document.createElement("button");b.className="sw";b.style.background=t.body;b.setAttribute("aria-label",t.n);b.setAttribute("aria-pressed",i===th);b.onclick=function(){th=i;theme();stage()};$("sw").appendChild(b)});
+ theme();list()}
+function list(){$("list").innerHTML="";PHONES.forEach(function(p,i){var r=document.createElement("div");r.className="row";r.tabIndex=0;r.setAttribute("role","button");r.setAttribute("aria-current",i===cur);
+ r.innerHTML='<div><div class="n">'+p.name+'</div><div class="b">'+p.brand+'</div></div><div class="p">'+pkr(p.price)+'</div><div class="s"><span>Sold today: '+(sold[p.id]||0)+'</span><button class="sell">Record sale</button></div>';
+ r.onclick=function(){cur=i;th=0;stage()};r.onkeydown=function(e){if(e.target===r&&(e.key==="Enter"||e.key===" ")){e.preventDefault();r.onclick()}};
+ r.querySelector(".sell").onclick=function(e){e.stopPropagation();sold[p.id]=(sold[p.id]||0)+1;save();totals();list();toast("Sale recorded: "+p.name)};
+ $("list").appendChild(r)})}
+var tt;function toast(m){var t=$("toast");t.textContent=m;t.classList.add("on");clearTimeout(tt);tt=setTimeout(function(){t.classList.remove("on")},1600)}
+$("reset").onclick=function(){if(confirm("Reset today’s sales counter to zero?")){sold={};save();totals();list()}};
+load();totals();stage();
+</script>
+</body>
+</html>
